@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慧膳食刻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2e7d32 0%, #ff9800 50%, #f57c00 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            position: relative;
+            width: 900px;
+            height: 550px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 900px;
+            height: 550px;
+            background: linear-gradient(0deg, transparent, #81c784, #81c784);
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
+        }
+        
+        .container::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 900px;
+            height: 550px;
+            background: linear-gradient(0deg, transparent, #ffb74d, #ffb74d);
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
+            animation-delay: -3s;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .form-container {
+            position: absolute;
+            inset: 5px;
+            background: #fff;
+            border-radius: 16px;
+            z-index: 10;
+            display: flex;
+        }
+        
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, #2e7d32 0%, #ff9800 50%, #f57c00 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px 0 0 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2.8rem;
+        }
+        
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .welcome-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .form-subtitle {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 10px;
+            font-size: 1rem;
+            color: #333;
+            border: none;
+            border-bottom: 2px solid #ddd;
+            outline: none;
+            background: transparent;
+            transition: 0.3s;
+        }
+        
+        .input-group label {
+            position: absolute;
+            top: 12px;
+            left: 10px;
+            font-size: 1rem;
+            color: #777;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+        
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: -15px;
+            left: 0;
+            color: #2e7d32;
+            font-size: 0.85rem;
+        }
+        
+        .input-group input:focus {
+            border-bottom: 2px solid #2e7d32;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            color: #777;
+        }
+        
+        .remember-forgot input {
+            margin-right: 5px;
+        }
+        
+        .remember-forgot a {
+            color: #2e7d32;
+            text-decoration: none;
+        }
+        
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            padding: 12px;
+            background: linear-gradient(135deg, #2e7d32 0%, #ff9800 50%, #f57c00 100%);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .register-link a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .form-toggle {
+            display: none;
+        }
+        
+        .register-form {
+            display: none;
+            flex-direction: column;
+        }
+        
+        #register-toggle:checked ~ .container .form-container .login-form {
+            display: none;
+        }
+        
+        #register-toggle:checked ~ .container .form-container .register-form {
+            display: flex;
+        }
+        
+        .error-message {
+            color: #f57c00;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                height: auto;
+            }
+            
+            .form-container {
+                flex-direction: column;
+            }
+            
+            .welcome-section {
+                border-radius: 12px 12px 0 0;
+                padding: 30px 20px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .features {
+                gap: 10px;
+            }
+            
+            .feature {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="register-toggle" class="form-toggle">
+    
+    <div class="container">
+        <div class="form-container">
+            <div class="welcome-section">
+                <div class="logo">
+                    <span class="logo-icon">🥗</span>慧膳食刻 
+                </div>
+                <h1>食疗养生，健康相伴</h1>
+                <p>个性化食疗方案与营养指导，助您调理身体，改善健康</p>
+                <p>基于您的体质、健康状况和饮食习惯，为您量身定制食疗方案</p>
+                
+                <div class="features">
+                    <div class="feature">个性化食疗方案</div>
+                    <div class="feature">营养分析</div>
+                    <div class="feature">健康食谱</div>
+                    <div class="feature">体质辨识</div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <!-- 登录表单 -->
+                <form class="form login-form">
+                    <h2 class="form-title">欢迎回来</h2>
+                    <p class="form-subtitle">登录以继续您的健康之旅</p>
+                    
+                    <div class="input-group">
+                        <input type="text" id="login-username" required>
+                        <label for="login-username">用户名或邮箱</label>
+                        <div class="error-message" id="login-username-error">请输入有效的用户名或邮箱</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">密码</label>
+                        <div class="error-message" id="login-password-error">密码不能为空</div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <label>
+                            <input type="checkbox"> 记住我
+                        </label>
+                        <a href="#">忘记密码？</a>
+                    </div>
+                    
+                    <button type="submit" class="btn">登录</button>
+                    
+                    <div class="register-link">
+                        还没有账户？<a onclick="toggleToRegister()">立即注册</a>
+                    </div>
+                </form>
+                
+                <!-- 注册表单 -->
+                <form class="form register-form">
+                    <h2 class="form-title">加入慧膳食刻</h2>
+                    <p class="form-subtitle">创建账户，开启健康生活</p>
+                    
+                    <div class="input-group">
+                        <input type="text" id="register-username" required>
+                        <label for="register-username">用户名</label>
+                        <div class="error-message" id="register-username-error">用户名至少3个字符</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" id="register-email" required>
+                        <label for="register-email">电子邮箱</label>
+                        <div class="error-message" id="register-email-error">请输入有效的电子邮箱</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="register-password" required>
+                        <label for="register-password">密码</label>
+                        <div class="error-message" id="register-password-error">密码至少6个字符</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" id="register-confirm-password" required>
+                        <label for="register-confirm-password">确认密码</label>
+                        <div class="error-message" id="register-confirm-password-error">密码不匹配</div>
+                    </div>
+                    
+                    <button type="submit" class="btn">开启食疗之旅</button>
+                    
+                    <div class="register-link">
+                        已有账户？<a onclick="toggleToLogin()">立即登录</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 表单验证和切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.querySelector('.login-form');
+            const registerForm = document.querySelector('.register-form');
+            const toggleCheckbox = document.getElementById('register-toggle');
+            
+            // 登录表单提交
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+                
+                // 验证用户名/邮箱
+                const username = document.getElementById('login-username').value;
+                const usernameError = document.getElementById('login-username-error');
+                if (username.trim() === '') {
+                    usernameError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    usernameError.style.display = 'none';
+                }
+                
+                // 验证密码
+                const password = document.getElementById('login-password').value;
+                const passwordError = document.getElementById('login-password-error');
+                if (password.trim() === '') {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                }
+                
+                if (isValid) {
+
+                          // 调用后端API
+                    const loginData = {
+                    identifier: username.trim(),
+                    password: password.trim()
+                    };
+                    
+                    fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data.code === 200) {
+                        console.log('登录成功，返回的数据:', data.data);;
+                        // 保存token到localStorage
+                        localStorage.setItem('token', data.data.token);
+                        if (data.data.user) {
+                        localStorage.setItem('userInfo', JSON.stringify(data.data.user));
+                        console.log('✅ 用户信息已保存到localStorage:', data.data.user);
+                    } else {
+                        console.error('❌ 后端返回的数据中没有user对象');
+                        console.error('完整返回数据:', result);
+                    }
+        
+                    // 显示成功消息
+                    alert('登录成功！即将跳转到个人中心...');
+                      // 等待1秒确保保存完成
+                    setTimeout(() => {
+                        // 验证保存是否成功
+                        const savedToken = localStorage.getItem('token');
+                        const savedUser = localStorage.getItem('userInfo');
+                        
+                        console.log('跳转前验证:');
+                        console.log('  Token:', savedToken ? '✅ 已保存' : '❌ 未保存');
+                        console.log('  UserInfo:', savedUser ? '✅ 已保存' : '❌ 未保存');
+                        
+                        if (savedToken && savedUser) {
+                        // 跳转到dashboard页面
+                        window.location.href = 'dashboard.html';
+                        } else {
+                        alert('登录信息保存失败，请检查控制台');
+                        }
+                    }, 1000);
+                    } 
+
+                        
+                         
+                     else {
+                        alert('登录失败：' + data.msg);
+                    }
+                    })
+                    .catch(error => {
+                    console.error('登录错误:', error);
+                    alert('网络错误，请检查后端服务器是否启动');
+                    });
+            }
+                           
+                
+            });
+            
+            // 注册表单提交
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+                
+                // 验证用户名
+                const username = document.getElementById('register-username').value;
+                const usernameError = document.getElementById('register-username-error');
+                if (username.trim().length < 3) {
+                    usernameError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    usernameError.style.display = 'none';
+                }
+                
+                // 验证邮箱
+                const email = document.getElementById('register-email').value;
+                const emailError = document.getElementById('register-email-error');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    emailError.style.display = 'none';
+                }
+                
+                // 验证密码
+                const password = document.getElementById('register-password').value;
+                const passwordError = document.getElementById('register-password-error');
+                if (password.length < 6) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                }
+                
+                // 验证确认密码
+                const confirmPassword = document.getElementById('register-confirm-password').value;
+                const confirmPasswordError = document.getElementById('register-confirm-password-error');
+                if (password !== confirmPassword) {
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    confirmPasswordError.style.display = 'none';
+                }
+                
+                if (isValid) {
+                    const registerData = {
+                    username: document.getElementById('register-username').value,
+                    email: document.getElementById('register-email').value,
+                    password: document.getElementById('register-password').value,
+                    nickname: document.getElementById('register-username').value
+                    };
+                    
+                    fetch('http://localhost:3000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registerData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data.code === 200) {
+                        alert('注册成功！请登录');
+                        toggleToLogin();
+                    } else {
+                        alert('注册失败：' + data.msg);
+                    }
+                    })
+                    .catch(error => {
+                    console.error('注册错误:', error);
+                    alert('网络错误，请检查后端服务器是否启动');
+                    });
+                }
+                            });
+        });
+        
+        // 切换表单的函数
+        function toggleToRegister() {
+            document.getElementById('register-toggle').checked = true;
+        }
+        
+        function toggleToLogin() {
+            document.getElementById('register-toggle').checked = false;
+        }
+    </script>
+</body>
+</html>
