@@ -431,9 +431,9 @@
             <div class="sidebar">
                 <div class="nav-item active" data-section="dashboard">📊 健康仪表盘</div>
                 <div class="nav-item" onclick="goToProfile()">👤 个人信息</div>
-                <div class="nav-item" data-section="health">💪 健康数据</div>
-                <div class="nav-item" data-section="therapy">🥗 食疗方案</div>
-                <div class="nav-item" data-section="diet">🍽️ 饮食记录</div>
+                <div class="nav-item" onclick="goToSurvey()">📋 体质测试</div>
+                <div class="nav-item" onclick="goToTherapy()">🥗 食疗方案</div>
+                <div class="nav-item" onclick="goToDiet()">🍽️ 饮食记录</div>
             </div>
             
             <div class="content">
@@ -1719,7 +1719,56 @@ function formatDate(date) {
         day: '2-digit'
     });
 }
+ function goToSurvey() {
+        // 检查是否在当前页面
+        if (window.location.href.includes('survey.html')) {
+            // 如果已经在问卷页面，滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+        
+        // 跳转到调查问卷页面
+        window.location.href = 'survey.html';
+    }
+    /**
+ * 跳转到饮食记录页面
+ */
+function goToDiet() {
+    // 检查是否已经在饮食记录页面
+    if (window.location.href.includes('diet.html')) {
+        // 如果已经在目标页面，滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        console.log('已经在饮食记录页面');
+        return;
+    }
+    
+    // 检查是否有未保存的数据
+  
+    
+    
+    // 跳转到饮食记录页面
+    window.location.href = 'diet.html';
+    console.log('跳转到饮食记录页面');
+}
 
+/**
+ * 跳转到食疗方案页面
+ */
+function goToTherapy() {
+    // 检查是否已经在食疗方案页面
+    if (window.location.href.includes('therapy.html')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        console.log('已经在食疗方案页面');
+        return;
+    }
+    
+    // 检查是否有未保存的数据
+    
+    
+    // 跳转到食疗方案页面
+    window.location.href = 'therapy.html';
+    console.log('跳转到食疗方案页面');
+}
 
 
 

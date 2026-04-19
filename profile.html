@@ -1269,7 +1269,7 @@
             console.log('Profile页面加载完成');
             
             // 检查登录状态
-            await checkLoginStatus();
+            await LoginStatus();
             
             // 加载用户信息
             await loadUserProfile();
@@ -1283,27 +1283,26 @@
         
         // 检查登录状态
         async function checkLoginStatus() {
-            const token = localStorage.getItem('token');
-            const userInfo = localStorage.getItem('userInfo');
-            
-            if (!token || !userInfo) {
-                alert('请先登录');
-                window.location.href = 'login.html';
-                return false;
-            }
-            
-            try {
-                currentUser = JSON.parse(userInfo);
-                console.log('当前用户:', currentUser);
-                return true;
-            } catch (error) {
-                console.error('解析用户信息失败:', error);
-                localStorage.removeItem('token');
-                localStorage.removeItem('userInfo');
-                window.location.href = 'login.html';
-                return false;
-            }
+    const token = localStorage.getItem('token');
+    const userInfo = localStorage.getItem('userInfo');
+    
+    if (token && userInfo) {
+        // 如果有登录信息，使用真实数据
+        try {
+            currentUser = JSON.parse(userInfo);
+            console.log('当前用户:', currentUser);
+            return true;
+        } catch (error) {
+            console.error('解析用户信息失败:', error);
+            // 解析失败，使用模拟数据
+            return false;
         }
+    } else {
+        // 如果没有登录，使用模拟数据
+        console.log('未登录，使用模拟数据');
+        return false;
+    }
+}
         
         // 加载用户信息
         async function loadUserProfile() {

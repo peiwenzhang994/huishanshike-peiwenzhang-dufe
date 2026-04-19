@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个性化食疗方案 - 慧膳食刻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary-color: #ff9800;
+            --bg-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+            --border-color: #e0e0e0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* 导航栏 */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: var(--card-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background: #f0f0f0;
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+        
+        /* 主体内容 */
+        .main-content {
+            padding: 30px 40px;
+        }
+        
+        /* 用户信息卡片 */
+        .user-info-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-details h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .user-details p {
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .constitution-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* 饮食方案区域 */
+        .diet-plan-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 饮食建议卡片 */
+        .diet-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .diet-card {
+            background: var(--card-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .diet-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .diet-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .diet-card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .diet-card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .diet-card-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .diet-card-content li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .diet-card-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .food-item {
+            display: inline-block;
+            background: #e8f5e9;
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin: 2px 5px 2px 0;
+        }
+        
+        /* 禁忌食品 */
+        .avoid-foods {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left-color: #f44336;
+        }
+        
+        .avoid-foods .diet-card-icon {
+            background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+        }
+        
+        /* 食谱推荐 */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .recipe-card {
+            background: var(--card-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .recipe-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .recipe-content {
+            padding: 20px;
+        }
+        
+        .recipe-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .recipe-desc {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .recipe-ingredients {
+            margin: 15px 0;
+        }
+        
+        .ingredient-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin: 3px;
+        }
+        
+        .recipe-method {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .recipe-method h4 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .recipe-method ol {
+            padding-left: 20px;
+        }
+        
+        .recipe-method li {
+            margin-bottom: 8px;
+        }
+        
+        /* 行动按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .user-info-card {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .recipes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="header-content">
+                <h1>🥗 个性化食疗方案</h1>
+                <p>根据您的体质类型，为您量身定制的饮食建议</p>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-links">
+                <a href="dashboard.html">🏠 首页</a>
+                <a href="profile.html">👤 个人档案</a>
+                <a href="survey.html">📋 体质测试</a>
+                <a href="therapy.html" class="active">🥗 食疗方案</a>
+            </div>
+        </div>
+        
+        <!-- 主要内容 -->
+        <div class="main-content">
+            <!-- 用户信息卡片 -->
+            <div class="user-info-card" id="user-info">
+                <div class="user-details">
+                    <h3 id="user-name">用户名称</h3>
+                    <p id="user-age">年龄：--岁</p>
+                    <p id="user-bmi">BMI：--</p>
+                </div>
+                <div class="constitution-tag" id="constitution-type">加载中...</div>
+            </div>
+            
+            <!-- 饮食原则部分 -->
+            <div class="diet-plan-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        📋 饮食原则建议
+                    </div>
+                </div>
+                
+                <div class="diet-cards">
+                    <!-- 宜食食物卡片 -->
+                    <div class="diet-card">
+                        <div class="diet-card-header">
+                            <div class="diet-card-icon">✅</div>
+                            <div class="diet-card-title">推荐食物</div>
+                        </div>
+                        <div class="diet-card-content" id="recommend-foods">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 忌食食物卡片 -->
+                    <div class="diet-card avoid-foods">
+                        <div class="diet-card-header">
+                            <div class="diet-card-icon">❌</div>
+                            <div class="diet-card-title">忌食食物</div>
+                        </div>
+                        <div class="diet-card-content" id="avoid-foods">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 饮食禁忌卡片 -->
+                    <div class="diet-card">
+                        <div class="diet-card-header">
+                            <div class="diet-card-icon">⚠️</div>
+                            <div class="diet-card-title">饮食禁忌</div>
+                        </div>
+                        <div class="diet-card-content" id="diet-taboos">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 食谱推荐部分 -->
+            <div class="diet-plan-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🍽️ 推荐食谱
+                    </div>
+                </div>
+                
+                <div class="recipes-grid" id="recipes-grid">
+                    <!-- 食谱卡片会由JavaScript动态生成 -->
+                    <div class="loading">加载食谱中...</div>
+                </div>
+            </div>
+            
+            <!-- 食疗药材部分 -->
+            <div class="diet-plan-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🌿 食疗药材推荐
+                    </div>
+                </div>
+                
+                <div class="diet-card">
+                    <div class="diet-card-content" id="herbal-recommendations">
+                        <p>加载中...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 行动按钮 -->
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="generateNewPlan()">
+                    🔄 重新生成方案
+                </button>
+                <button class="btn-secondary" onclick="printPlan()">
+                    🖨️ 打印方案
+                </button>
+                <button class="btn-secondary" onclick="savePlan()">
+                    💾 保存方案
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据 - 用户信息
+        const mockUserData = {
+            name: "张伟",
+            age: 32,
+            height: 175,
+            weight: 68,
+            bmi: 22.2,
+            constitution: "气虚质"
+        };
+        
+        // 模拟数据 - 不同体质的食疗方案
+        const dietPlans = {
+            "平和质": {
+                description: "阴阳气血调和，是健康的体质状态。饮食应以平衡为主，无需特别偏颇。",
+                recommendFoods: [
+                    "五谷杂粮", "新鲜蔬菜", "时令水果", "豆制品", "瘦肉", "鱼类", 
+                    "鸡蛋", "牛奶", "坚果", "菌菇类"
+                ],
+                avoidFoods: [
+                    "过量辛辣", "油腻食物", "生冷食物", "过度加工的食品"
+                ],
+                dietPrinciples: [
+                    "饮食多样化，保持营养均衡",
+                    "按时进餐，避免暴饮暴食",
+                    "饮食清淡，少盐少油",
+                    "适量饮水，每天1500-2000ml"
+                ],
+                herbalRecommendations: [
+                    "黄芪（补气）", "枸杞（滋阴）", "红枣（补血）", "山药（健脾）"
+                ],
+                recipes: [
+                    {
+                        id: 1,
+                        name: "五谷杂粮粥",
+                        description: "富含膳食纤维，有助于消化，平衡营养",
+                        ingredients: ["小米", "玉米糁", "红豆", "薏米", "红枣"],
+                        method: "将所有材料洗净，加水煮1-2小时至软烂即可",
+                        benefits: "健脾养胃，补中益气"
+                    },
+                    {
+                        id: 2,
+                        name: "清蒸鲈鱼",
+                        description: "清淡易消化，富含优质蛋白质",
+                        ingredients: ["鲈鱼", "姜丝", "葱丝", "料酒", "蒸鱼豉油"],
+                        method: "鲈鱼处理干净，加调料蒸8-10分钟，淋热油",
+                        benefits: "滋补肝肾，健脾益气"
+                    }
+                ]
+            },
+            
+            "气虚质": {
+                description: "元气不足，易疲乏、气短、自汗。饮食应注重补气健脾。",
+                recommendFoods: [
+                    "小米", "糯米", "山药", "红枣", "鸡肉", "牛肉", "鲫鱼", 
+                    "香菇", "黄豆", "蜂蜜", "桂圆"
+                ],
+                avoidFoods: [
+                    "生冷食物", "油腻食物", "辛辣食物", "苦寒食物", "油炸食品"
+                ],
+                dietPrinciples: [
+                    "少量多餐，避免过饱",
+                    "食物要温热，忌生冷",
+                    "细嚼慢咽，减轻脾胃负担",
+                    "适当食用补气食物"
+                ],
+                herbalRecommendations: [
+                    "黄芪（补气固表）", "党参（补中益气）", "白术（健脾益气）", 
+                    "山药（健脾补肺）", "大枣（补中益气）"
+                ],
+                recipes: [
+                    {
+                        id: 1,
+                        name: "黄芪炖鸡",
+                        description: "补气养血，增强体力",
+                        ingredients: ["鸡肉", "黄芪", "枸杞", "红枣", "姜片"],
+                        method: "鸡肉焯水，与药材同炖1.5-2小时，调味即可",
+                        benefits: "补中益气，增强免疫力"
+                    },
+                    {
+                        id: 2,
+                        name: "山药小米粥",
+                        description: "健脾养胃，补气生津",
+                        ingredients: ["山药", "小米", "红枣", "枸杞"],
+                        method: "山药切块，与小米、红枣同煮成粥，最后加枸杞",
+                        benefits: "健脾补肺，固肾益精"
+                    }
+                ]
+            },
+            
+            "阳虚质": {
+                description: "阳气不足，畏寒怕冷，手足不温。饮食应温补阳气。",
+                recommendFoods: [
+                    "羊肉", "牛肉", "鸡肉", "韭菜", "核桃", "桂圆", "生姜", 
+                    "花椒", "大葱", "荔枝", "榴莲"
+                ],
+                avoidFoods: [
+                    "生冷食物", "寒性水果", "冷饮", "苦瓜", "螃蟹", "西瓜"
+                ],
+                dietPrinciples: [
+                    "多吃温热性食物",
+                    "烹饪时多加温性调料（姜、葱、蒜、花椒）",
+                    "避免生食，食物要熟透",
+                    "冬季可适量进补"
+                ],
+                herbalRecommendations: [
+                    "肉桂（温补肾阳）", "干姜（温中散寒）", "杜仲（补肝肾）", 
+                    "淫羊藿（补肾阳）", "肉苁蓉（补肾益精）"
+                ],
+                recipes: [
+                    {
+                        id: 1,
+                        name: "当归生姜羊肉汤",
+                        description: "温中补血，祛寒止痛",
+                        ingredients: ["羊肉", "当归", "生姜", "料酒", "盐"],
+                        method: "羊肉焯水，与当归、生姜同炖2小时，调味",
+                        benefits: "温阳散寒，补血活血"
+                    },
+                    {
+                        id: 2,
+                        name: "核桃韭菜炒虾仁",
+                        description: "补肾温阳，强筋健骨",
+                        ingredients: ["韭菜", "虾仁", "核桃仁", "姜蒜"],
+                        method: "虾仁腌制，与韭菜、核桃同炒，调味",
+                        benefits: "补肾壮阳，温中下气"
+                    }
+                ]
+            },
+            
+            "阴虚质": {
+                description: "阴液亏少，口燥咽干，手足心热。饮食应滋阴润燥。",
+                recommendFoods: [
+                    "银耳", "百合", "梨", "西瓜", "荸荠", "莲藕", "鸭肉", 
+                    "甲鱼", "绿豆", "豆腐", "蜂蜜"
+                ],
+                avoidFoods: [
+                    "辛辣食物", "温燥食物", "油炸食品", "羊肉", "辣椒", "花椒"
+                ],
+                dietPrinciples: [
+                    "多吃滋阴润燥食物",
+                    "饮食清淡，少盐少油",
+                    "适当食用凉性食物",
+                    "多喝水，保持身体水分"
+                ],
+                herbalRecommendations: [
+                    "麦冬（养阴生津）", "沙参（养阴清肺）", "玉竹（养阴润燥）", 
+                    "枸杞（滋补肝肾）", "石斛（益胃生津）"
+                ],
+                recipes: [
+                    {
+                        id: 1,
+                        name: "银耳莲子羹",
+                        description: "滋阴润肺，养胃生津",
+                        ingredients: ["银耳", "莲子", "红枣", "冰糖"],
+                        method: "银耳泡发，与莲子、红枣同煮1小时，加冰糖",
+                        benefits: "滋阴润燥，安神补心"
+                    },
+                    {
+                        id: 2,
+                        name: "沙参玉竹老鸭汤",
+                        description: "滋阴润肺，养胃生津",
+                        ingredients: ["老鸭", "沙参", "玉竹", "枸杞", "姜片"],
+                        method: "老鸭焯水，与药材同炖2小时，调味",
+                        benefits: "滋阴清热，润肺止咳"
+                    }
+                ]
+            },
+            
+            "痰湿质": {
+                description: "痰湿凝聚，体型肥胖，腹部肥满，口黏苔腻。饮食应健脾祛湿。",
+                recommendFoods: [
+                    "薏米", "赤小豆", "冬瓜", "白萝卜", "海带", "鲫鱼", 
+                    "绿豆芽", "芹菜", "山药", "茯苓"
+                ],
+                avoidFoods: [
+                    "油腻食物", "甜食", "冷饮", "肥肉", "油炸食品", "糯米"
+                ],
+                dietPrinciples: [
+                    "饮食清淡，少油少盐",
+                    "多吃利湿化痰食物",
+                    "控制食量，避免过饱",
+                    "适当运动，帮助化湿"
+                ],
+                herbalRecommendations: [
+                    "茯苓（利水渗湿）", "薏苡仁（健脾利湿）", "陈皮（理气化痰）", 
+                    "半夏（燥湿化痰）", "荷叶（清热利湿）"
+                ],
+                recipes: [
+                    {
+                        id: 1,
+                        name: "薏米赤小豆粥",
+                        description: "健脾祛湿，利水消肿",
+                        ingredients: ["薏米", "赤小豆", "茯苓", "芡实"],
+                        method: "所有材料浸泡后煮1-2小时成粥",
+                        benefits: "健脾利湿，清热解毒"
+                    },
+                    {
+                        id: 2,
+                        name: "冬瓜海带汤",
+                        description: "利尿消肿，清热化痰",
+                        ingredients: ["冬瓜", "海带", "虾米", "姜片"],
+                        method: "冬瓜、海带切块，与虾米同煮30分钟，调味",
+                        benefits: "利水渗湿，清热化痰"
+                    }
+                ]
+            }
+        };
+        
+        // 页面加载时生成食疗方案
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取用户体质类型（这里使用模拟数据）
+            const userConstitution = mockUserData.constitution;
+            
+            // 更新用户信息
+            updateUserInfo();
+            
+            // 生成食疗方案
+            generateDietPlan(userConstitution);
+        });
+        
+        // 更新用户信息
+        function updateUserInfo() {
+            document.getElementById('user-name').textContent = mockUserData.name;
+            document.getElementById('user-age').textContent = `年龄：${mockUserData.age}岁`;
+            document.getElementById('user-bmi').textContent = `BMI：${mockUserData.bmi}`;
+            document.getElementById('constitution-type').textContent = mockUserData.constitution;
+        }
+        
+        // 生成食疗方案
+        function generateDietPlan(constitution) {
+            const plan = dietPlans[constitution] || dietPlans["平和质"];
+            
+            // 更新推荐食物
+            const recommendFoodsEl = document.getElementById('recommend-foods');
+            recommendFoodsEl.innerHTML = `
+                <p>${plan.description}</p>
+                <div style="margin-top: 15px;">
+                    ${plan.recommendFoods.map(food => 
+                        `<span class="food-item">${food}</span>`
+                    ).join('')}
+                </div>
+            `;
+            
+            // 更新忌食食物
+            const avoidFoodsEl = document.getElementById('avoid-foods');
+            avoidFoodsEl.innerHTML = `
+                <div>
+                    ${plan.avoidFoods.map(food => 
+                        `<span class="food-item">${food}</span>`
+                    ).join('')}
+                </div>
+            `;
+            
+            // 更新饮食禁忌
+            const dietTaboosEl = document.getElementById('diet-taboos');
+            dietTaboosEl.innerHTML = `
+                <ul>
+                    ${plan.dietPrinciples.map(principle => 
+                        `<li>✅ ${principle}</li>`
+                    ).join('')}
+                </ul>
+            `;
+            
+            // 更新食疗药材
+            const herbalEl = document.getElementById('herbal-recommendations');
+            herbalEl.innerHTML = `
+                <p><strong>推荐药材：</strong></p>
+                <div style="margin-top: 10px;">
+                    ${plan.herbalRecommendations.map(herb => 
+                        `<span class="food-item" style="background:#e3f2fd;color:#1565c0;">${herb}</span>`
+                    ).join('')}
+                </div>
+                <p style="margin-top: 15px; color: #666; font-style: italic;">
+                    注意：药材使用前请咨询中医师，根据个人情况调整用量。
+                </p>
+            `;
+            
+            // 更新食谱推荐
+            const recipesGrid = document.getElementById('recipes-grid');
+            recipesGrid.innerHTML = plan.recipes.map(recipe => `
+                <div class="recipe-card">
+                    <div class="recipe-image">
+                        🥘
+                    </div>
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.name}</h3>
+                        <p class="recipe-desc">${recipe.description}</p>
+                        
+                        <div class="recipe-ingredients">
+                            <p><strong>主要食材：</strong></p>
+                            ${recipe.ingredients.map(ingredient => 
+                                `<span class="ingredient-tag">${ingredient}</span>`
+                            ).join('')}
+                        </div>
+                        
+                        <div class="recipe-method">
+                            <h4>👩‍🍳 制作方法</h4>
+                            <p>${recipe.method}</p>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 8px;">
+                            <strong>功效：</strong> ${recipe.benefits}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 重新生成方案
+        function generateNewPlan() {
+            // 这里可以随机选择一个体质类型来演示
+            const constitutions = Object.keys(dietPlans);
+            const randomConstitution = constitutions[Math.floor(Math.random() * constitutions.length)];
+            
+            // 更新用户体质显示
+            mockUserData.constitution = randomConstitution;
+            document.getElementById('constitution-type').textContent = randomConstitution;
+            
+            // 重新生成方案
+            generateDietPlan(randomConstitution);
+            
+            // 显示提示
+            showMessage(`已为您重新生成 ${randomConstitution} 的食疗方案`, 'info');
+        }
+        
+        // 打印方案
+        function printPlan() {
+            showMessage('准备打印食疗方案...', 'info');
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+        
+        // 保存方案
+        function savePlan() {
+            const planData = {
+                user: mockUserData,
+                plan: dietPlans[mockUserData.constitution] || dietPlans["平和质"],
+                generatedAt: new Date().toLocaleString()
+            };
+            
+            // 保存到本地存储
+            localStorage.setItem('savedDietPlan', JSON.stringify(planData));
+            
+            showMessage('食疗方案已保存到本地！', 'success');
+        }
+        
+        // 显示消息提示
+        function showMessage(message, type = 'info') {
+            // 创建消息元素
+            const messageEl = document.createElement('div');
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            `;
+            
+            // 根据类型设置背景色
+            if (type === 'success') {
+                messageEl.style.background = 'linear-gradient(135deg, #4caf50, #2e7d32)';
+            } else if (type === 'error') {
+                messageEl.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+            } else {
+                messageEl.style.background = 'linear-gradient(135deg, #2196f3, #1976d2)';
+            }
+            
+            messageEl.textContent = message;
+            
+            // 添加到页面
+            document.body.appendChild(messageEl);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                messageEl.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(messageEl);
+                }, 300);
+            }, 3000);
+            
+            // 添加动画样式
+            if (!document.querySelector('#message-styles')) {
+                const styleEl = document.createElement('style');
+                styleEl.id = 'message-styles';
+                styleEl.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(styleEl);
+            }
+        }
+        
+        // 加载已保存的方案
+        function loadSavedPlan() {
+            const savedPlan = localStorage.getItem('savedDietPlan');
+            if (savedPlan) {
+                try {
+                    const planData = JSON.parse(savedPlan);
+                    mockUserData.constitution = planData.user.constitution || mockUserData.constitution;
+                    updateUserInfo();
+                    generateDietPlan(mockUserData.constitution);
+                } catch (e) {
+                    console.error('加载保存的方案失败:', e);
+                }
+            }
+        }
+        
+        // 初始化时加载已保存的方案
+        loadSavedPlan();
+    </script>
+</body>
+</html>
